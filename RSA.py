@@ -1,15 +1,15 @@
-# Importing necessary modules
+# ------ Importing necessary modules
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import padding, rsa,ec
 
-## Function for generating the private and public keys 
-def generate_key_pair():
+# Function for generating the private and public keys 
+def generate_RSA_key_pair():
     private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
     public_key = private_key.public_key()
     return private_key, public_key
 
-#Encrypts a message using RSA encryption with OAEP padding
+# Encrypts a message using RSA encryption with OAEP padding
 def rsa_encrypt(message_path, public_key):
     with open(message_path, "rb") as f:
         message = f.read()
@@ -33,10 +33,10 @@ def rsa_decrypt(ciphertext, private_key):
     ).decode("utf-8")
     return plaintext
 
-#Testing algorithm
+# ------ Testing algorithm
 
 # Generating RSA key pair
-private_key, public_key = generate_key_pair()
+private_key, public_key = generate_RSA_key_pair()
 
 # Serializing and printing private key
 private_key_pem = private_key.private_bytes(
@@ -44,21 +44,25 @@ private_key_pem = private_key.private_bytes(
     format=serialization.PrivateFormat.PKCS8,
     encryption_algorithm=serialization.NoEncryption()
 )
-print("Private Key:")
-print(private_key_pem.decode())
 
 # Serializing and printing public key
 public_key_pem = public_key.public_bytes(
     encoding=serialization.Encoding.PEM,
     format=serialization.PublicFormat.SubjectPublicKeyInfo
 )
-print("\nPublic Key:")
-print(public_key_pem.decode())
 
-mesaage_path = r"message.txt"
+def return_decoded_RSA_key_pair():
+    return private_key_pem.decode(), public_key_pem.decode()
 
-encryption = rsa_encrypt(mesaage_path, public_key)
-print("Encrypted message is :", encryption)
+private_key_dec, public_key_dec = return_decoded_RSA_key_pair()
+# print("Private Key:", private_key_pem.decode())
+# print("\nPublic Key:", public_key_pem.decode())
 
-decryption = rsa_decrypt(encryption, private_key)
-print("Decrypted message is :", decryption)
+
+# mesaage_path = r"message.txt"
+
+# encryption = rsa_encrypt(mesaage_path, public_key)
+# print("Encrypted message is :", encryption)
+
+# decryption = rsa_decrypt(encryption, private_key)
+# print("Decrypted message is :", decryption)
