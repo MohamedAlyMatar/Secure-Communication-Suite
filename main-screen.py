@@ -51,7 +51,7 @@ if __name__ == "__main__":
             hashed_new_password = calculate_md5(new_password)
 
             if email_exists(email):
-                # Assuming check_password_match function checks if new password is different from old password
+                # check if new password is different from old password
                 if not check_password_match(email, hashed_new_password):
                     # Update password if new password is different from old password
                     update_password(email, hashed_new_password)
@@ -67,4 +67,4 @@ if __name__ == "__main__":
 
         choice = input("Enter your choice (1/2/3/4): ")  # Ask for choice again at the end of each iteration
 
-    print("Thank you for using Secure Communication Suite. Goodbye!")
+    print("\n!Thank you for using our Secure Communication Suite. Goodbye <3 !")
