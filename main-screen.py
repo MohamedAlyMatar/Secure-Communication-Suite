@@ -1,4 +1,6 @@
-from Authentication_Methods import *
+from Methods_Authentication import *
+
+current_user = None
 
 if __name__ == "__main__":
     print("-------------------------------------")
@@ -22,9 +24,8 @@ if __name__ == "__main__":
             hashed_password = calculate_md5(password)
 
             private_key_rsa, public_key_rsa = generate_RSA_key_pair()
-            private_key_ecc, public_key_ecc = generate_ECC_key_pair()
 
-            if save_user_data(email, hashed_password, private_key_rsa, public_key_rsa, private_key_ecc, public_key_ecc):
+            if save_user_data(email, hashed_password, private_key_rsa, public_key_rsa):
                 print("User registration successful")
             else:
                 print("User registration failed. Email already exists.")
@@ -40,6 +41,8 @@ if __name__ == "__main__":
                 print("Email not found")
             elif login(email, hashed_password):
                 print("Login successful")
+                current_user = email
+                print(current_user)
             else:
                 print("Login failed")
         
@@ -67,4 +70,4 @@ if __name__ == "__main__":
 
         choice = input("Enter your choice (1/2/3/4): ")  # Ask for choice again at the end of each iteration
 
-    print("\n!Thank you for using our Secure Communication Suite. Goodbye <3 !")
+    print("\n! Thank you for using our Secure Communication Suite. Goodbye <3 !")

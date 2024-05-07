@@ -13,14 +13,14 @@ def email_exists(email):
         return False
 
 # Function to save user data to CSV file
-def save_user_data(email, encrypted_password, private_key_rsa, public_key_rsa, private_key_ecc, public_key_ecc):
+def save_user_data(email, encrypted_password, private_key_rsa, public_key_rsa):
     if email_exists(email):
         print("Email already exists. Please use a different email.")
         return False
 
     with open('users.csv', mode='a', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow([email, encrypted_password, private_key_rsa, public_key_rsa, private_key_ecc, public_key_ecc])
+        writer.writerow([email, encrypted_password, private_key_rsa, public_key_rsa])
     return True
 
 
@@ -32,17 +32,6 @@ def email_exists(email):
             if row[0] == email:
                 return True
         return False
-
-# Function to save user data to CSV file
-def save_user_data(email, encrypted_password, private_key_rsa, public_key_rsa, private_key_ecc, public_key_ecc):
-    if email_exists(email):
-        print("Email already exists. Please use a different email.")
-        return False
-
-    with open('users.csv', mode='a', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow([email, encrypted_password, private_key_rsa, public_key_rsa, private_key_ecc, public_key_ecc])
-    return True
 
 # Function to check user credentials during login
 def login(email, password_hash):
