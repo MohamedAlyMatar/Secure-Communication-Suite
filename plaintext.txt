@@ -1,4 +1,0 @@
-Dear Nasef,
-this is an email message example to test our read function
-let's hope it works
-Your pal, Matar

@@ -1,7 +1,7 @@
 import csv  # For CSV file operations
-from RSA import generate_RSA_key_pair
-from ECC import generate_ECC_key_pair
-from MD5 import calculate_md5  # Importing the calculate_md5 function from MD5.py
+from ciphers.RSA import generate_RSA_key_pair
+from ciphers.ECC import generate_ECC_key_pair
+from ciphers.MD5 import calculate_md5  # Importing the calculate_md5 function from MD5.py
 
 
 
@@ -104,12 +104,18 @@ def signin():
         return None
     elif login(email, hashed_password):
         print("Login successful")
-        return email
+        with open('users.csv', newline='') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                if row[0] == email:
+                    private_key = eval(row[2]) if row[2] else None
+                    public_key = eval(row[3]) if row[3] else None
+                    return 
+
+        return email,public_key,private_key
     else:
         print("Login failed")
         return None
-
-
 
 def logincheck(current_user_email):
     if not current_user_email:

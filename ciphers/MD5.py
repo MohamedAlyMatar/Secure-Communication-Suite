@@ -1,5 +1,5 @@
 import hashlib
-from Methods_File import *
+from supports.files import *
 
 def calculate_md5(data):
     md5_hash = hashlib.md5()

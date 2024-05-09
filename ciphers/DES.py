@@ -1,7 +1,7 @@
 from Crypto.Cipher import DES
 from Crypto.Random import get_random_bytes
 from Crypto.Util.Padding import pad, unpad
-from Methods_File import *
+from supports.files import *
 
 # DES function
 def encrypt_des(key, plaintext):

@@ -1,4 +1,4 @@
-from Methods_Authentication import *
+from supports.authentication import *
 
 def sendmessage(current_user_email):
     if logincheck(current_user_email):
@@ -6,6 +6,7 @@ def sendmessage(current_user_email):
         sender = current_user_email
         receiver = input("Enter recipient's email: ")
         message = input("Enter your message: ")
+        #message = funcencrypt(message)
         with open('messages.csv', mode='a', newline='') as file:
             writer = csv.writer(file)
             writer.writerow([sender, receiver, message])

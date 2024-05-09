@@ -1,8 +1,8 @@
 import csv
-from RSA import generate_RSA_key_pair, rsa_encrypt
-from MD5 import calculate_md5
-from Methods_Authentication import *
-from messages import *
+from ciphers.RSA import generate_RSA_key_pair, rsa_encrypt
+from ciphers.MD5 import calculate_md5
+from supports.authentication import *
+from supports.messages import *
 from cryptography.hazmat.primitives import serialization
 
 def welcome():
@@ -24,12 +24,15 @@ def welcome():
 
 def main():
     current_user_email = None
+    current_user_public = None
+    current_user_private = None
     status = welcome()
     while status != 6:
         if status == 1:
             signup()
         elif status == 2:
-            current_user_email = signin()
+            current_user_email,current_user_public,current_user_private = signin()
+            #print(str(current_user_email) +""+str(current_user_private)+""+str(current_user_public))
         elif status == 3:
             active(current_user_email)
         elif status == 4:
