@@ -3,6 +3,8 @@ from RSA import generate_RSA_key_pair
 from ECC import generate_ECC_key_pair
 from MD5 import calculate_md5  # Importing the calculate_md5 function from MD5.py
 
+
+
 # Function to check if email exists in users.csv
 def email_exists(email):
     with open('users.csv', mode='r') as file:

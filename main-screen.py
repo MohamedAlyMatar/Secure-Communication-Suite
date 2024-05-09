@@ -1,23 +1,27 @@
+import csv
+from RSA import generate_RSA_key_pair, rsa_encrypt
+from MD5 import calculate_md5
 from Methods_Authentication import *
+from cryptography.hazmat.primitives import serialization
 
-current_user = None
-
-if __name__ == "__main__":
+def welcome():
     print("-------------------------------------")
     print("Secure Communication Suite")
     print("by NRM\n")
 
     print("Choose the operation:")
-    print("1. Sign-up (new)")
-    print("2. Sign-in (already registered)")
-    print("3. Forgot/Recover password")
-    print("4. Exit")
+    print("1. Sign-up")
+    print("2. Sign-in")
+    print("3. List Active Users")
+    print("4. Send Message")
+    print("5. Read Message")
+    print("6. Exit")
     print("-------------------------------------")
+    choice = int(input("Enter your choice (1/2/3/4/5/6):"))
+    return choice
 
-    choice = input("Enter your choice (1/2/3/4): ")
-    while choice != '4':
-        # --------- 1. sign-up (new) ---------
-        if choice == '1':
+
+def signup():
             print("\n---> Sign-up (new)")
             email = input("Enter your email: ")
             password = input("Enter your password: ")
@@ -29,9 +33,8 @@ if __name__ == "__main__":
                 print("User registration successful")
             else:
                 print("User registration failed. Email already exists.")
-        
-        # --------- 2. sign-up (already registered) ---------
-        elif choice == '2':  # Sign-in (already registered)
+
+def signin():
             print("\n---> Sign-in (already registered)")
             email = input("Enter your email: ")
             password = input("Enter your password: ")
@@ -45,29 +48,38 @@ if __name__ == "__main__":
                 print(current_user)
             else:
                 print("Login failed")
+
+def active():
+    print("\n---> Active Users")
+    with open('users.csv', mode='r') as file:
+        reader = csv.reader(file)
+        active_users = [row[0] for row in reader if row]
+    for user in active_users:
+        print("- " +user)
+
+def sendmessage():
+    pass
+
+def readmessage():
+    pass
+
+
+def main():
+    status =welcome()
+    while status != 6:
+        if status == 1:
+            signup()
+        elif status == 2:
+            signin()
+        elif status == 3:
+            active()
+        elif status == 4:
+            sendmessage()
+        elif status == 5:
+            readmessage()        
+        status = welcome()
+
         
-        # --------- 3. Forgot/Recover password ---------
-        elif choice == '3':  # Forgot/Recover password
-            print("\n---> Forgot/Recover password")
-            email = input("Enter your email: ")
-            new_password = input("Enter your new password: ")
-            hashed_new_password = calculate_md5(new_password)
 
-            if email_exists(email):
-                # check if new password is different from old password
-                if not check_password_match(email, hashed_new_password):
-                    # Update password if new password is different from old password
-                    update_password(email, hashed_new_password)
-                    print("Password updated successfully")
-                else:
-                    print("New password cannot be the same as the old password")
-            else:
-                print("Email not found. Please enter a registered email.")
-
-        # Invalid choice
-        else:
-            print("Invalid choice. Please choose 1, 2, 3, or 4.")
-
-        choice = input("Enter your choice (1/2/3/4): ")  # Ask for choice again at the end of each iteration
-
-    print("\n! Thank you for using our Secure Communication Suite. Goodbye <3 !")
+if __name__ == "__main__":
+    main()
