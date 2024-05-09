@@ -79,3 +79,40 @@ def update_password(email, new_password):
         writer.writerows(rows)
 
     return True
+
+def signup():
+    print("\n---> Sign-up (new)")
+    email = input("Enter your email: ")
+    password = input("Enter your password: ")
+    hashed_password = calculate_md5(password)
+
+    private_key_rsa, public_key_rsa = generate_RSA_key_pair()
+
+    if save_user_data(email, hashed_password, private_key_rsa, public_key_rsa):
+        print("User registration successful")
+    else:
+        print("User registration failed. Email already exists.")
+
+def signin():
+    print("\n---> Sign-in")
+    email = input("Enter your email: ")
+    password = input("Enter your password: ")
+    hashed_password = calculate_md5(password)
+
+    if not email_exists(email):
+        print("Email not found")
+        return None
+    elif login(email, hashed_password):
+        print("Login successful")
+        return email
+    else:
+        print("Login failed")
+        return None
+
+
+
+def logincheck(current_user_email):
+    if not current_user_email:
+        print("You need to sign in first.")
+        return False
+    return True
