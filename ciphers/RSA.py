@@ -1,68 +1,89 @@
 # ------ Importing necessary modules
+import csv
+import os
 from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.asymmetric import padding, rsa,ec
 
-# Function for generating the private and public keys 
+# Function for generating the private and public keys
 def generate_RSA_key_pair():
+    print("alooooooooooooooooooooooooooooooooooooooooo")
     private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
     public_key = private_key.public_key()
     return private_key, public_key
 
+# ////////// Functions for exporting and importing keys //////////
+
+# Export private key to a file in the private folder
+def export_private_key(private_key, username):
+    private_folder = os.path.join("private", f"{username}_private_key.pem")
+    with open(private_folder, "wb+") as key_file:
+        key_file.write(private_key.private_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PrivateFormat.TraditionalOpenSSL,
+            encryption_algorithm=serialization.NoEncryption()
+        ))
+
+# Export public key to PEM format
+def export_public_key(public_key, username):
+    public_folder = os.path.join("public", f"{username}_public_key.pem")
+    try:
+        with open(public_folder, "wb+") as key_file:
+            key_file.write(public_key.public_bytes(
+                encoding=serialization.Encoding.PEM,
+                format=serialization.PublicFormat.OpenSSH
+            ))
+        print(f"Public key for {username} exported successfully.")
+    except Exception as e:
+        print(f"Error exporting public key: {e}")
+
+# Import private key from a file
+def import_private_key(username):
+    private_folder = os.path.join("private", f"{username}_private_key.pem")
+    try:
+        with open(private_folder, "rb") as key_file:
+            private_key = serialization.load_pem_private_key(
+                key_file.read(),
+                password=None
+            )
+        print(f"Private key for {username} imported successfully.")
+        return private_key
+    except Exception as e:
+        print(f"Error importing private key: {e}")
+        return None  # Return None or handle the error as needed
+
+# Import public key from a file
+def import_public_key(username):
+    public_folder = os.path.join("public", f"{username}_public_key.pem")
+    with open(public_folder, "rb") as key_file:
+        public_key = serialization.load_pem_public_key(
+            key_file.read()
+        )
+    return public_key
+
+#  ////////// Functions for encrypting and decrypting messages /////////
+
 # Encrypts a message using RSA encryption with OAEP padding
-def rsa_encrypt(message_path, public_key):
-    with open(message_path, "rb") as f:
-        message = f.read()
-    ciphertext = public_key.encrypt(message,
+def rsa_encrypt(message, imported_public_key):
+    ciphertext = imported_public_key.encrypt(
+        message,
         padding.OAEP(
             mgf=padding.MGF1(algorithm=hashes.SHA256()),
             algorithm=hashes.SHA256(),
             label=None
         )
     )
+    print("\nCiper text:  ", ciphertext)
     return ciphertext
 
 # Decrypts ciphertext using RSA decryption with OAEP padding.
-def rsa_decrypt(ciphertext, private_key):
-    plaintext = private_key.decrypt(ciphertext,
+def rsa_decrypt(ciphertext, imported_private_key):
+    plaintext = imported_private_key.decrypt(
+        ciphertext,
         padding.OAEP(
             mgf=padding.MGF1(algorithm=hashes.SHA256()),
             algorithm=hashes.SHA256(),
             label=None
         )
-    ).decode("utf-8")
+    )
     return plaintext
-
-# ------ Testing algorithm
-
-# Generating RSA key pair
-private_key, public_key = generate_RSA_key_pair()
-
-# Serializing and printing private key
-private_key_pem = private_key.private_bytes(
-    encoding=serialization.Encoding.PEM,
-    format=serialization.PrivateFormat.PKCS8,
-    encryption_algorithm=serialization.NoEncryption()
-)
-
-# Serializing and printing public key
-public_key_pem = public_key.public_bytes(
-    encoding=serialization.Encoding.PEM,
-    format=serialization.PublicFormat.SubjectPublicKeyInfo
-)
-
-def return_decoded_RSA_key_pair():
-    return private_key_pem.decode(), public_key_pem.decode()
-
-private_key_dec, public_key_dec = return_decoded_RSA_key_pair()
-# print("Private Key:", private_key_pem.decode())
-# print("\nPublic Key:", public_key_pem.decode())
-
-
-# mesaage_path = r"message.txt"
-
-# encryption = rsa_encrypt(mesaage_path, public_key)
-# print("Encrypted message is :", encryption)
-
-# decryption = rsa_decrypt(encryption, private_key)
-# print("Decrypted message is :", decryption)

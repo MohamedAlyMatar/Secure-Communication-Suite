@@ -1,6 +1,3 @@
-import csv
-from ciphers.RSA import generate_RSA_key_pair, rsa_encrypt
-from ciphers.MD5 import calculate_md5
 from supports.authentication import *
 from supports.messages import *
 from cryptography.hazmat.primitives import serialization
@@ -31,8 +28,8 @@ def main():
         if status == 1:
             signup()
         elif status == 2:
-            current_user_email,current_user_public,current_user_private = signin()
-            #print(str(current_user_email) +""+str(current_user_private)+""+str(current_user_public))
+            current_user_email = login()
+            # print(str(current_user_email) +""+str(current_user_private)+""+str(current_user_public))
         elif status == 3:
             active(current_user_email)
         elif status == 4:
