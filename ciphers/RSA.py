@@ -31,7 +31,7 @@ def export_public_key(public_key, username):
         with open(public_folder, "wb+") as key_file:
             key_file.write(public_key.public_bytes(
                 encoding=serialization.Encoding.PEM,
-                format=serialization.PublicFormat.OpenSSH
+                format=serialization.PublicFormat.SubjectPublicKeyInfo
             ))
         print(f"Public key for {username} exported successfully.")
     except Exception as e:
