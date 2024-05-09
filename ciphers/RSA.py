@@ -7,7 +7,6 @@ from cryptography.hazmat.primitives import hashes
 
 # Function for generating the private and public keys
 def generate_RSA_key_pair():
-    print("alooooooooooooooooooooooooooooooooooooooooo")
     private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
     public_key = private_key.public_key()
     return private_key, public_key
@@ -65,8 +64,7 @@ def import_public_key(username):
 
 # Encrypts a message using RSA encryption with OAEP padding
 def rsa_encrypt(message, imported_public_key):
-    ciphertext = imported_public_key.encrypt(
-        message,
+    ciphertext = imported_public_key.encrypt(message,
         padding.OAEP(
             mgf=padding.MGF1(algorithm=hashes.SHA256()),
             algorithm=hashes.SHA256(),
@@ -74,12 +72,15 @@ def rsa_encrypt(message, imported_public_key):
         )
     )
     print("\nCiper text:  ", ciphertext)
+    print(len(ciphertext))
     return ciphertext
 
 # Decrypts ciphertext using RSA decryption with OAEP padding.
 def rsa_decrypt(ciphertext, imported_private_key):
-    plaintext = imported_private_key.decrypt(
-        ciphertext,
+    print("\nCiper text:  ", ciphertext)
+    print(len(ciphertext))
+    print(imported_private_key)
+    plaintext = imported_private_key.decrypt(ciphertext,
         padding.OAEP(
             mgf=padding.MGF1(algorithm=hashes.SHA256()),
             algorithm=hashes.SHA256(),
