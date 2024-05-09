@@ -13,7 +13,20 @@ def signup():
     
     export_private_key(private_key_rsa, email)
     export_public_key(public_key_rsa, email)
+    print("exported private key:", private_key_rsa)
+    print("exported public key:", public_key_rsa)
     
+    imported_private_key = import_private_key(email)
+    imported_public_key = import_public_key(email)
+    print("Imported private key:", imported_private_key)
+    print("fucccccccccccck")
+    print("Imported public key:", imported_public_key)
+    
+    print("fucccccccccccck")
+    imported_private_key = import_private_key(email)
+    imported_public_key = import_public_key(email)
+    print("Imported private key:", imported_private_key)
+    print("Imported public key:", imported_public_key)
 
     if save_user_data(email, hashed_password, private_key_rsa, public_key_rsa):
         print("User registration successful")
