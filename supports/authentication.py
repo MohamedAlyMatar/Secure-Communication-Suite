@@ -1,3 +1,6 @@
+from colorama import init, Fore, Back, Style
+init()
+
 import csv  # For CSV file operations
 from ciphers.RSA import *
 # from ciphers.ECC import generate_ECC_key_pair
@@ -9,29 +12,13 @@ def signup():
     password = input("Enter your password: ")
     hashed_password = calculate_md5(password)
 
-    private_key_rsa, public_key_rsa = generate_RSA_key_pair()
-    
-    export_private_key(private_key_rsa, email)
-    export_public_key(public_key_rsa, email)
-    print("exported private key:", private_key_rsa)
-    print("exported public key:", public_key_rsa)
-    
-    imported_private_key = import_private_key(email)
-    imported_public_key = import_public_key(email)
-    print("Imported private key:", imported_private_key)
-    print("fucccccccccccck")
-    print("Imported public key:", imported_public_key)
-    
-    print("fucccccccccccck")
-    imported_private_key = import_private_key(email)
-    imported_public_key = import_public_key(email)
-    print("Imported private key:", imported_private_key)
-    print("Imported public key:", imported_public_key)
-
-    if save_user_data(email, hashed_password, private_key_rsa, public_key_rsa):
-        print("User registration successful")
+    if save_user_data(email, hashed_password):
+        private_key_rsa, public_key_rsa = generate_RSA_key_pair()
+        export_private_key(private_key_rsa, email)
+        export_public_key(public_key_rsa, email)
+        print(Fore.GREEN + "User registration successful" + Fore.RESET)
     else:
-        print("User registration failed. Email already exists.")
+        print(Fore.RED + "User registration failed. Email already exists." + Fore.RESET)
 
 def signin():
     print("\n---> Sign-in")
@@ -50,11 +37,11 @@ def signin():
                     rsa_public_key_str = row[3]
                     return email, rsa_private_key_str, rsa_public_key_str 
     else:
-        print("Login failed")
+        print(Fore.RED + "Login failed" + Fore.RESET)
 
 def logincheck(current_user_email):
     if not current_user_email:
-        print("You need to sign in first.")
+        print(Fore.RED + "You need to sign in first." + Fore.RESET)
         return False
     return True
 
@@ -66,18 +53,17 @@ def email_exists(email):
         for row in reader:
             if row[0] == email:
                 return True
-        print("Email not found")
+        print(Fore.GREEN + "Unique email" + Fore.RESET)
         return False
 
 
 # Function to save user data to CSV file
-def save_user_data(email, encrypted_password, private_key_rsa, public_key_rsa):
+def save_user_data(email, encrypted_password):
     if email_exists(email):
         return False
-
     with open('users.csv', mode='a', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow([email, encrypted_password, private_key_rsa, public_key_rsa])
+        writer.writerow([email, encrypted_password])
     return True
 
 # Function to check user credentials during login
@@ -90,11 +76,12 @@ def login():
         for row in reader:
             if row[0] == email:
                 if row[1] == password_hash:
-                    print("Login successful")
+                    print(Fore.GREEN + "Login successful" + Fore.RESET)
                     return email
                 else:
-                    print("Incorrect password. Please try again.")
+                    print(Fore.RED + "Incorrect password. Please try again." + Fore.RESET)
                     return False
+        print(Fore.RED + "User not found. Please try again." + Fore.RESET)
         return False
     
 
@@ -108,7 +95,7 @@ def check_password_match(email, hashed_password):
                 if row[1] == hashed_password:
                     return True
                 else:
-                    print("Incorrect password. Please try again!.")
+                    print(Fore.RED + "Incorrect password. Please try again!." + Fore.RESET)
                     return False
         return False
     

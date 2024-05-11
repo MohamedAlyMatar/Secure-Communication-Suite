@@ -1,4 +1,7 @@
 # ------ Importing necessary modules
+from colorama import init, Fore, Back, Style
+init()
+
 import csv
 import os
 from cryptography.hazmat.primitives import serialization
@@ -16,12 +19,16 @@ def generate_RSA_key_pair():
 # Export private key to a file in the private folder
 def export_private_key(private_key, username):
     private_folder = os.path.join("private", f"{username}_private_key.pem")
-    with open(private_folder, "wb+") as key_file:
-        key_file.write(private_key.private_bytes(
-            encoding=serialization.Encoding.PEM,
-            format=serialization.PrivateFormat.TraditionalOpenSSL,
-            encryption_algorithm=serialization.NoEncryption()
-        ))
+    try:
+        with open(private_folder, "wb+") as key_file:
+            key_file.write(private_key.private_bytes(
+                encoding=serialization.Encoding.PEM,
+                format=serialization.PrivateFormat.TraditionalOpenSSL,
+                encryption_algorithm=serialization.NoEncryption()
+            ))
+            print(Fore.GREEN + f"Private key for {username} exported successfully." + Fore.RESET)
+    except Exception as e:
+        print(Fore.RED + f"Error exporting private key: {e}" + Fore.RESET)
 
 # Export public key to PEM format
 def export_public_key(public_key, username):
@@ -32,9 +39,9 @@ def export_public_key(public_key, username):
                 encoding=serialization.Encoding.PEM,
                 format=serialization.PublicFormat.SubjectPublicKeyInfo
             ))
-        print(f"Public key for {username} exported successfully.")
+        print(Fore.GREEN + f"Public key for {username} exported successfully." + Fore.RESET)
     except Exception as e:
-        print(f"Error exporting public key: {e}")
+        print(Fore.RED + f"Error exporting public key: {e}" + Fore.RESET)
 
 # Import private key from a file
 def import_private_key(username):
@@ -45,20 +52,25 @@ def import_private_key(username):
                 key_file.read(),
                 password=None
             )
-        print(f"Private key for {username} imported successfully.")
+        print(Fore.GREEN + f"Private key for {username} imported successfully." + Fore.RESET)
         return private_key
     except Exception as e:
-        print(f"Error importing private key: {e}")
+        print(Fore.RED + f"Error importing public key: {e}" + Fore.RESET)
         return None  # Return None or handle the error as needed
 
 # Import public key from a file
 def import_public_key(username):
     public_folder = os.path.join("public", f"{username}_public_key.pem")
-    with open(public_folder, "rb") as key_file:
-        public_key = serialization.load_pem_public_key(
-            key_file.read()
-        )
-    return public_key
+    try:
+        with open(public_folder, "rb") as key_file:
+            public_key = serialization.load_pem_public_key(
+                key_file.read()
+            )
+            print(Fore.GREEN + f"Public key for {username} imported successfully." + Fore.RESET)
+        return public_key
+    except Exception as e:
+        print(Fore.RED + f"Error importing public key: {e}" + Fore.RESET)
+        return None
 
 #  ////////// Functions for encrypting and decrypting messages /////////
 

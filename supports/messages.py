@@ -1,3 +1,6 @@
+from colorama import init, Fore, Back, Style
+init()
+
 import base64
 from supports.authentication import *
 # from main import *
@@ -30,7 +33,7 @@ def sendmessage(current_user_email):
         with open('messages.csv', mode='a', newline='') as file:
             writer = csv.writer(file)
             writer.writerow([sender, receiver, encoded_message])
-        print("Message sent successfully to", receiver)
+        print(Fore.GREEN + "Message sent successfully to", receiver + Fore.RESET)
 
 def readmessage(current_user_email):
     if logincheck(current_user_email):
@@ -45,7 +48,7 @@ def readmessage(current_user_email):
             try:
                 msg_bytes = base64.b64decode(message)
                 plaintext = rsa_decrypt(msg_bytes, imported_private_key)
-                print("Message:", plaintext.decode('utf-8'))  # Decode as UTF-8
+                print(Fore.CYAN + "Message:", plaintext.decode('utf-8') + Fore.RESET)  # Decode as UTF-8
             except Exception as e:
                 print("Error decoding message:", e)
 
@@ -56,4 +59,4 @@ def active(current_user_email):
             reader = csv.reader(file)
             active_users = [row[0] for row in reader if row]
         for user in active_users:
-            print("- " + user)
+            print(Fore.LIGHTYELLOW_EX + "- " + user + Fore.RESET)

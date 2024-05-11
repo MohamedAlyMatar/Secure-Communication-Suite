@@ -1,10 +1,13 @@
+from colorama import init, Fore, Back, Style
+init()
+
 from supports.authentication import *
 from supports.messages import *
 from cryptography.hazmat.primitives import serialization
 
 def welcome():
     print("-------------------------------------")
-    print("Secure Communication Suite")
+    print(Style.BRIGHT + Fore.CYAN + "Secure Communication Suite" + Fore.RESET)
     print("by NRM\n")
 
     print("Choose the operation:")
@@ -35,8 +38,8 @@ def main():
             readmessage(current_user_email)
         status = welcome()
         if status == 6:
-            print("Goodbye!")
             current_user_email = None
+    print(Fore.CYAN + "Goodbye!" + Fore.RESET)
 
 if __name__ == "__main__":
     main()
