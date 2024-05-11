@@ -27,10 +27,8 @@ def signin():
     hashed_password = calculate_md5(password)
 
     if not email_exists(email):
-        print("Email not found")
         return None
     elif login(email, hashed_password):
-        print("Login successful")
         with open('users.csv', mode='r') as file:
             reader = csv.reader(file)
             for row in reader:
@@ -55,28 +53,19 @@ def email_exists(email):
         for row in reader:
             if row[0] == email:
                 return True
+        print("Email not found")
         return False
+
 
 # Function to save user data to CSV file
 def save_user_data(email, encrypted_password, private_key_rsa, public_key_rsa):
     if email_exists(email):
-        print("Email already exists. Please use a different email.")
         return False
 
     with open('users.csv', mode='a', newline='') as file:
         writer = csv.writer(file)
         writer.writerow([email, encrypted_password, private_key_rsa, public_key_rsa])
     return True
-
-
-# Function to check if email exists in users.csv
-def email_exists(email):
-    with open('users.csv', mode='r') as file:
-        reader = csv.reader(file)
-        for row in reader:
-            if row[0] == email:
-                return True
-        return False
 
 # Function to check user credentials during login
 def login():
@@ -88,8 +77,10 @@ def login():
         for row in reader:
             if row[0] == email:
                 if row[1] == password_hash:
+                    print("Login successful")
                     return email
                 else:
+                    print("Incorrect password. Please try again.")
                     return False
         return False
     
@@ -104,6 +95,7 @@ def check_password_match(email, hashed_password):
                 if row[1] == hashed_password:
                     return True
                 else:
+                    print("Incorrect password. Please try again!.")
                     return False
         return False
     

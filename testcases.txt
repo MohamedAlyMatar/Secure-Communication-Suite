@@ -1,0 +1,4 @@
+1. sign up with a same username/email already exist
+2. wrong username/email
+3. wrong password
+4. 

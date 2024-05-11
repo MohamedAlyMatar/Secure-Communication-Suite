@@ -21,15 +21,12 @@ def welcome():
 
 def main():
     current_user_email = None
-    current_user_public = None
-    current_user_private = None
     status = welcome()
     while status != 6:
         if status == 1:
             signup()
         elif status == 2:
             current_user_email = login()
-            # print(str(current_user_email) +""+str(current_user_private)+""+str(current_user_public))
         elif status == 3:
             active(current_user_email)
         elif status == 4:
@@ -38,6 +35,7 @@ def main():
             readmessage(current_user_email)
         status = welcome()
         if status == 6:
+            print("Goodbye!")
             current_user_email = None
 
 if __name__ == "__main__":
