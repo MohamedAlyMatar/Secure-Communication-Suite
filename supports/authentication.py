@@ -7,7 +7,7 @@ from ciphers.RSA import *
 from ciphers.MD5 import calculate_md5  # Importing the calculate_md5 function from MD5.py
 
 def signup():
-    print("\n---> Sign-up (new)")
+    print(Fore.YELLOW + "\n---> Sign-up (new)" + Fore.RESET)
     email = input("Enter your email: ")
     password = input("Enter your password: ")
     hashed_password = calculate_md5(password)
@@ -21,7 +21,7 @@ def signup():
         print(Fore.RED + "User registration failed. Email already exists." + Fore.RESET)
 
 def signin():
-    print("\n---> Sign-in")
+    print(Fore.YELLOW + "\n---> Sign-in" + Fore.RESET)
     email = input("Enter your email: ")
     password = input("Enter your password: ")
     hashed_password = calculate_md5(password)

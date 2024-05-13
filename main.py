@@ -6,19 +6,19 @@ from supports.messages import *
 from cryptography.hazmat.primitives import serialization
 
 def welcome():
-    print("-------------------------------------")
+    print("_____________________________________")
     print(Style.BRIGHT + Fore.CYAN + "Secure Communication Suite" + Fore.RESET)
-    print("by NRM\n")
+    print(Style.BRIGHT + Fore.CYAN + "by NRM\n" + Fore.RESET)
 
-    print("Choose the operation:")
+    print( Fore.YELLOW + "What you want to do? " + Fore.RESET)
     print("1. Sign-up")
     print("2. Sign-in")
     print("3. List Active Users")
     print("4. Send Message")
     print("5. Read Message")
     print("6. Exit")
-    print("-------------------------------------")
-    choice = int(input("Enter your choice (1/2/3/4/5/6):"))
+    print("_____________________________________")
+    choice = int(input(Fore.YELLOW + "Enter your choice (1/2/3/4/5/6): " + Fore.RESET))
     return choice
 
 
@@ -39,7 +39,7 @@ def main():
         status = welcome()
         if status == 6:
             current_user_email = None
-    print(Fore.CYAN + "Goodbye!" + Fore.RESET)
+    print(Fore.CYAN + Style.BRIGHT + "Goodbye!" + Fore.RESET)
 
 if __name__ == "__main__":
     main()
