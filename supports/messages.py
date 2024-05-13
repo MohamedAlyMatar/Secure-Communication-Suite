@@ -18,10 +18,10 @@ def sendmessage(current_user_email):
     if logincheck(current_user_email):
         print(Fore.YELLOW + "\n---> Send Message" + Fore.RESET)
         sender = current_user_email
-        receiver = input("Enter recipient's email: ")
+        receiver = input("Enter recipient's email: ").strip()
         imported_public_key = import_public_key(receiver)  # Import recipient's public key
 
-        message = input("Enter your message: ")
+        message = input("Enter your message: ").strip()
         message_bytes = message.encode('utf-8')
 
         # Encrypt message with recipient's public key

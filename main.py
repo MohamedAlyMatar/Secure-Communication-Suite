@@ -18,8 +18,11 @@ def welcome():
     print("5. Read Message")
     print("6. Exit")
     print("_____________________________________")
-    choice = int(input(Fore.YELLOW + "Enter your choice (1/2/3/4/5/6): " + Fore.RESET))
-    return choice
+    try:
+        choice = int(input(Fore.YELLOW + "Enter your choice (1/2/3/4/5/6): " + Fore.RESET))
+        return choice
+    except:
+        print(Fore.RED + "Invalid choice. Please input a number from 1 to 6." + Fore.RESET)
 
 
 def main():

@@ -22,8 +22,8 @@ def signup():
 
 def signin():
     print(Fore.YELLOW + "\n---> Sign-in" + Fore.RESET)
-    email = input("Enter your email: ")
-    password = input("Enter your password: ")
+    email = input("Enter your email: ").strip()
+    password = input("Enter your password: ").strip()
     hashed_password = calculate_md5(password)
 
     if not email_exists(email):
@@ -68,8 +68,8 @@ def save_user_data(email, encrypted_password):
 
 # Function to check user credentials during login
 def login():
-    email = input("Enter your email: ")
-    password = input("Enter your password: ")
+    email = input("Enter your email: ").strip()
+    password = input("Enter your password: ").strip()
     password_hash = calculate_md5(password)
     with open('users.csv', mode='r') as file:
         reader = csv.reader(file)
