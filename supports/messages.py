@@ -3,6 +3,7 @@ init()
 
 import base64
 from supports.authentication import *
+from ciphers.MD5 import *
 # from main import *
 
 def clean_byte_string(byte_str):
@@ -23,6 +24,7 @@ def sendmessage(current_user_email):
 
         message = input("Enter your message: ")
         message_bytes = message.encode('utf-8')
+        print("Signature: "+str(calculate_md5(message)))
 
         # Encrypt message with recipient's public key
         message_encrypted = rsa_encrypt(message_bytes, imported_public_key)
