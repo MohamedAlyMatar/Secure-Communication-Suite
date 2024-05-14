@@ -1,4 +1,6 @@
 1. sign up with a same username/email already exist
 2. wrong username/email
 3. wrong password
-4. 
+4. wrong choice number
+5. wrong choice type -> char/string
+6.

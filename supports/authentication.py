@@ -7,7 +7,7 @@ from ciphers.RSA import *
 from ciphers.MD5 import calculate_md5  # Importing the calculate_md5 function from MD5.py
 
 def signup():
-    print("\n---> Sign-up (new)")
+    print(Fore.YELLOW + "\n---> Sign-up (new)" + Fore.RESET)
     email = input("Enter your email: ")
     password = input("Enter your password: ")
     hashed_password = calculate_md5(password)
@@ -21,9 +21,9 @@ def signup():
         print(Fore.RED + "User registration failed. Email already exists." + Fore.RESET)
 
 def signin():
-    print("\n---> Sign-in")
-    email = input("Enter your email: ")
-    password = input("Enter your password: ")
+    print(Fore.YELLOW + "\n---> Sign-in" + Fore.RESET)
+    email = input("Enter your email: ").strip()
+    password = input("Enter your password: ").strip()
     hashed_password = calculate_md5(password)
 
     if not email_exists(email):
@@ -68,8 +68,8 @@ def save_user_data(email, encrypted_password):
 
 # Function to check user credentials during login
 def login():
-    email = input("Enter your email: ")
-    password = input("Enter your password: ")
+    email = input("Enter your email: ").strip()
+    password = input("Enter your password: ").strip()
     password_hash = calculate_md5(password)
     with open('users.csv', mode='r') as file:
         reader = csv.reader(file)

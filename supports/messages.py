@@ -17,12 +17,12 @@ import base64
 # Define logincheck, import_public_key, rsa_encrypt functions if not already defined
 def sendmessage(current_user_email):
     if logincheck(current_user_email):
-        print("\n---> Send Message")
+        print(Fore.YELLOW + "\n---> Send Message" + Fore.RESET)
         sender = current_user_email
-        receiver = input("Enter recipient's email: ")
+        receiver = input("Enter recipient's email: ").strip()
         imported_public_key = import_public_key(receiver)  # Import recipient's public key
 
-        message = input("Enter your message: ")
+        message = input("Enter your message: ").strip()
         message_bytes = message.encode('utf-8')
         print("Signature: "+str(calculate_md5(message)))
 
@@ -39,7 +39,7 @@ def sendmessage(current_user_email):
 
 def readmessage(current_user_email):
     if logincheck(current_user_email):
-        print("\n---> Read Message")
+        print(Fore.YELLOW + "\n---> Read Message" + Fore.RESET)
         with open('messages.csv', mode='r') as file:
             reader = csv.reader(file)
             messages = [(row[0], row[2]) for row in reader if row[1] == current_user_email]
@@ -56,7 +56,7 @@ def readmessage(current_user_email):
 
 def active(current_user_email):
     if logincheck(current_user_email):
-        print("\n---> Active Users")
+        print(Fore.YELLOW + "\n---> Active Users" + Fore.RESET)
         with open('users.csv', mode='r') as file:
             reader = csv.reader(file)
             active_users = [row[0] for row in reader if row]
