@@ -1,5 +1,6 @@
 from colorama import init, Fore, Back, Style
 init()
+import re
 
 import csv  # For CSV file operations
 from ciphers.RSA import *
@@ -7,11 +8,21 @@ from ciphers.RSA import *
 from ciphers.MD5 import calculate_md5  # Importing the calculate_md5 function from MD5.py
 from ciphers.DES import *
 
+def check_email_format(email):
+    if re.search(r"([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+", email, re.IGNORECASE):
+        return True
+    else:
+        return False
+
 def signup():
     print(Fore.YELLOW + "\n---> Sign-up (new)" + Fore.RESET)
     email = input("Enter your email: ")
-    password = input("Enter your password: ")
-    hashed_password = calculate_md5(password)
+    if(check_email_format(email)):
+        password = input("Enter your password: ")
+        hashed_password = calculate_md5(password)
+    else:
+        print(Fore.RED + "Wrong email format, try again." + Fore.RESET)
+        return
 
     if save_user_data(email, hashed_password):
         private_key_rsa, public_key_rsa = generate_RSA_key_pair()
