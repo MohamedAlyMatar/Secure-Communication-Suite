@@ -19,7 +19,7 @@ def sendmessage(current_user_email):
     if logincheck(current_user_email):
         print(Fore.YELLOW + "\n---> Send Message" + Fore.RESET)
         sender = current_user_email
-        receiver = input("Enter recipient's email: ").strip()
+        receiver = input("\nEnter recipient's email: ").strip()
         imported_public_key = import_public_key(receiver)  # Import recipient's public key
 
         message = input("Enter your message: ").strip()
@@ -45,7 +45,7 @@ def readmessage(current_user_email):
             messages = [(row[0], row[2]) for row in reader if row[1] == current_user_email]
             
         for sender, message in messages:
-            print("From:", sender)
+            print("\nFrom:", sender)
             imported_private_key = import_private_key(current_user_email)
             try:
                 msg_bytes = base64.b64decode(message)

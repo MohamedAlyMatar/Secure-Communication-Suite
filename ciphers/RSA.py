@@ -83,15 +83,15 @@ def rsa_encrypt(message, imported_public_key):
             label=None
         )
     )
-    print("\nCiper text:  ", ciphertext)
-    print(len(ciphertext))
+    # print("\nCiper text:  ", ciphertext)
+    # print(len(ciphertext))
     return ciphertext
 
 # Decrypts ciphertext using RSA decryption with OAEP padding.
 def rsa_decrypt(ciphertext, imported_private_key):
-    print("\nCiper text:  ", ciphertext)
-    print(len(ciphertext))
-    print(imported_private_key)
+    # print("\nCiper text:  ", ciphertext)
+    # print(len(ciphertext))
+    # print(imported_private_key)
     plaintext = imported_private_key.decrypt(ciphertext,
         padding.OAEP(
             mgf=padding.MGF1(algorithm=hashes.SHA256()),
