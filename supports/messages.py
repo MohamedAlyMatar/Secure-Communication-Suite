@@ -46,7 +46,8 @@ def readmessage(current_user_email):
             
         for sender, message in messages:
             print("\nFrom:", sender)
-            imported_private_key = import_private_key(current_user_email)
+            import_DES_key = get_DES_key(current_user_email)
+            imported_private_key = import_private_key(import_DES_key, current_user_email)
             try:
                 msg_bytes = base64.b64decode(message)
                 plaintext = rsa_decrypt(msg_bytes, imported_private_key)

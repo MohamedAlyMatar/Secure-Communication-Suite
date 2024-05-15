@@ -7,6 +7,7 @@ import os
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import hashes
+from ciphers.DES import *
 
 # Function for generating the private and public keys
 def generate_RSA_key_pair():
@@ -16,17 +17,32 @@ def generate_RSA_key_pair():
 
 # ////////// Functions for exporting and importing keys //////////
 
-# Export private key to a file in the private folder
-def export_private_key(private_key, username):
+# # Export private key to a file in the private folder
+# def export_private_key(private_key, username):
+#     private_folder = os.path.join("private", f"{username}_private_key.pem")
+#     try:
+#         with open(private_folder, "wb+") as key_file:
+#             key_file.write(private_key.private_bytes(
+#                 encoding=serialization.Encoding.PEM,
+#                 format=serialization.PrivateFormat.TraditionalOpenSSL,
+#                 encryption_algorithm=serialization.NoEncryption()
+#             ))
+#             print(Fore.GREEN + f"Private key for {username} exported successfully." + Fore.RESET)
+#     except Exception as e:
+#         print(Fore.RED + f"Error exporting private key: {e}" + Fore.RESET)
+
+# Modify export_private_key to encrypt the private key before export
+def export_private_key(des_key, private_key, username):
     private_folder = os.path.join("private", f"{username}_private_key.pem")
     try:
+        encrypted_private_key = des_encrypt(des_key, private_key.private_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PrivateFormat.TraditionalOpenSSL,
+            encryption_algorithm=serialization.NoEncryption()
+        ).decode('utf-8'))  # Convert bytes to string for encryption
         with open(private_folder, "wb+") as key_file:
-            key_file.write(private_key.private_bytes(
-                encoding=serialization.Encoding.PEM,
-                format=serialization.PrivateFormat.TraditionalOpenSSL,
-                encryption_algorithm=serialization.NoEncryption()
-            ))
-            print(Fore.GREEN + f"Private key for {username} exported successfully." + Fore.RESET)
+            key_file.write(encrypted_private_key)
+        print(Fore.GREEN + f"Private key for {username} exported and encrypted successfully." + Fore.RESET)
     except Exception as e:
         print(Fore.RED + f"Error exporting private key: {e}" + Fore.RESET)
 
@@ -43,19 +59,36 @@ def export_public_key(public_key, username):
     except Exception as e:
         print(Fore.RED + f"Error exporting public key: {e}" + Fore.RESET)
 
-# Import private key from a file
-def import_private_key(username):
+# # Import private key from a file
+# def import_private_key(username):
+#     private_folder = os.path.join("private", f"{username}_private_key.pem")
+#     try:
+#         with open(private_folder, "rb") as key_file:
+#             private_key = serialization.load_pem_private_key(
+#                 key_file.read(),
+#                 password=None
+#             )
+#         print(Fore.GREEN + f"Private key for {username} imported successfully." + Fore.RESET)
+#         return private_key
+#     except Exception as e:
+#         print(Fore.RED + f"Error importing public key: {e}" + Fore.RESET)
+#         return None  # Return None or handle the error as needed
+    
+# Modify import_private_key to decrypt the private key after import
+def import_private_key(des_key, username):
     private_folder = os.path.join("private", f"{username}_private_key.pem")
     try:
         with open(private_folder, "rb") as key_file:
-            private_key = serialization.load_pem_private_key(
-                key_file.read(),
-                password=None
-            )
-        print(Fore.GREEN + f"Private key for {username} imported successfully." + Fore.RESET)
+            encrypted_private_key = key_file.read()
+        decrypted_private_key = des_decrypt(des_key, encrypted_private_key)
+        private_key = serialization.load_pem_private_key(
+            decrypted_private_key.encode('utf-8'),  # Convert string back to bytes for loading
+            password=None
+        )
+        print(Fore.GREEN + f"Private key for {username} imported and decrypted successfully." + Fore.RESET)
         return private_key
     except Exception as e:
-        print(Fore.RED + f"Error importing public key: {e}" + Fore.RESET)
+        print(Fore.RED + f"Error importing private key: {e}" + Fore.RESET)
         return None  # Return None or handle the error as needed
 
 # Import public key from a file

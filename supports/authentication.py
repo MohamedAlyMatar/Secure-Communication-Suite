@@ -5,6 +5,7 @@ import csv  # For CSV file operations
 from ciphers.RSA import *
 # from ciphers.ECC import generate_ECC_key_pair
 from ciphers.MD5 import calculate_md5  # Importing the calculate_md5 function from MD5.py
+from ciphers.DES import *
 
 def signup():
     print(Fore.YELLOW + "\n---> Sign-up (new)" + Fore.RESET)
@@ -14,7 +15,8 @@ def signup():
 
     if save_user_data(email, hashed_password):
         private_key_rsa, public_key_rsa = generate_RSA_key_pair()
-        export_private_key(private_key_rsa, email)
+        key = set_DES_key(email)
+        export_private_key(key, private_key_rsa, email)
         export_public_key(public_key_rsa, email)
         print(Fore.GREEN + "User registration successful" + Fore.RESET)
     else:
