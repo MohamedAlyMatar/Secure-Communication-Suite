@@ -4,7 +4,6 @@ init()
 import base64
 from supports.authentication import *
 from ciphers.MD5 import *
-# from main import *
 
 def clean_byte_string(byte_str):
     if byte_str.startswith('b"') or byte_str.startswith("b'"):

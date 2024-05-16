@@ -1,9 +1,9 @@
-# ------ Importing necessary modules
+# ////////// Importing necessary modules //////////
+import csv
+import os
 from colorama import init, Fore, Back, Style
 init()
 
-import csv
-import os
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import hashes
@@ -31,7 +31,7 @@ def generate_RSA_key_pair():
 #     except Exception as e:
 #         print(Fore.RED + f"Error exporting private key: {e}" + Fore.RESET)
 
-# Modify export_private_key to encrypt the private key before export
+# Modified export_private_key to encrypt the private key before export
 def export_private_key(des_key, private_key, username):
     private_folder = os.path.join("private", f"{username}_private_key.pem")
     try:
@@ -74,7 +74,7 @@ def export_public_key(public_key, username):
 #         print(Fore.RED + f"Error importing public key: {e}" + Fore.RESET)
 #         return None  # Return None or handle the error as needed
     
-# Modify import_private_key to decrypt the private key after import
+# Modified import_private_key to decrypt the private key after import
 def import_private_key(des_key, username):
     private_folder = os.path.join("private", f"{username}_private_key.pem")
     try:

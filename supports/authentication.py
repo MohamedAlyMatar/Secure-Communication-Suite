@@ -1,11 +1,9 @@
 from colorama import init, Fore, Back, Style
 init()
 import re
-
-import csv  # For CSV file operations
+import csv
 from ciphers.RSA import *
-# from ciphers.ECC import generate_ECC_key_pair
-from ciphers.MD5 import calculate_md5  # Importing the calculate_md5 function from MD5.py
+from ciphers.MD5 import calculate_md5
 from ciphers.DES import *
 
 def check_email_format(email):
@@ -33,24 +31,44 @@ def signup():
     else:
         print(Fore.RED + "User registration failed. Email already exists." + Fore.RESET)
 
-def signin():
+
+# Function to check user credentials during login
+def login():
     print(Fore.YELLOW + "\n---> Sign-in" + Fore.RESET)
     email = input("Enter your email: ").strip()
     password = input("Enter your password: ").strip()
-    hashed_password = calculate_md5(password)
+    password_hash = calculate_md5(password)
+    with open('users.csv', mode='r') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            if row[0] == email:
+                if row[1] == password_hash:
+                    print(Fore.GREEN + "Login successful" + Fore.RESET)
+                    return email
+                else:
+                    print(Fore.RED + "Incorrect password. Please try again." + Fore.RESET)
+                    return False
+        print(Fore.RED + "User not found. Please try again." + Fore.RESET)
+        return False
 
-    if not email_exists(email):
-        return None
-    elif login(email, hashed_password):
-        with open('users.csv', mode='r') as file:
-            reader = csv.reader(file)
-            for row in reader:
-                if row[0] == email:
-                    rsa_private_key_str = row[2]
-                    rsa_public_key_str = row[3]
-                    return email, rsa_private_key_str, rsa_public_key_str 
-    else:
-        print(Fore.RED + "Login failed" + Fore.RESET)
+# def signin():
+#     print(Fore.YELLOW + "\n---> Sign-in" + Fore.RESET)
+#     email = input("Enter your email: ").strip()
+#     password = input("Enter your password: ").strip()
+#     hashed_password = calculate_md5(password)
+
+#     if not email_exists(email):
+#         return None
+#     elif login(email, hashed_password):
+#         with open('users.csv', mode='r') as file:
+#             reader = csv.reader(file)
+#             for row in reader:
+#                 if row[0] == email:
+#                     rsa_private_key_str = row[2]
+#                     rsa_public_key_str = row[3]
+#                     return email, rsa_private_key_str, rsa_public_key_str 
+#     else:
+#         print(Fore.RED + "Login failed" + Fore.RESET)
 
 def logincheck(current_user_email):
     if not current_user_email:
@@ -78,25 +96,6 @@ def save_user_data(email, encrypted_password):
         writer = csv.writer(file)
         writer.writerow([email, encrypted_password])
     return True
-
-# Function to check user credentials during login
-def login():
-    email = input("Enter your email: ").strip()
-    password = input("Enter your password: ").strip()
-    password_hash = calculate_md5(password)
-    with open('users.csv', mode='r') as file:
-        reader = csv.reader(file)
-        for row in reader:
-            if row[0] == email:
-                if row[1] == password_hash:
-                    print(Fore.GREEN + "Login successful" + Fore.RESET)
-                    return email
-                else:
-                    print(Fore.RED + "Incorrect password. Please try again." + Fore.RESET)
-                    return False
-        print(Fore.RED + "User not found. Please try again." + Fore.RESET)
-        return False
-    
 
 
 # Function to check if hashed passwords match
